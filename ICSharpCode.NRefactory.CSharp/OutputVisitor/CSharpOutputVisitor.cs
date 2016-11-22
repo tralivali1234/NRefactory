@@ -502,7 +502,7 @@ namespace ICSharpCode.NRefactory.CSharp
 					WriteKeyword(UndocumentedExpression.RefvalueKeywordRole);
 					break;
 			}
-			if (undocumentedExpression.Arguments.Count > 0) {
+			if (undocumentedExpression.UndocumentedExpressionType != UndocumentedExpressionType.ArgListAccess) {
 				Space(policy.SpaceBeforeMethodCallParentheses);
 				WriteCommaSeparatedListInParenthesis(undocumentedExpression.Arguments, policy.SpaceWithinMethodCallParentheses);
 			}
@@ -1832,6 +1832,9 @@ namespace ICSharpCode.NRefactory.CSharp
 			StartNode(destructorDeclaration);
 			WriteAttributes(destructorDeclaration.Attributes);
 			WriteModifiers(destructorDeclaration.ModifierTokens);
+			if (destructorDeclaration.ModifierTokens.Any()) {
+				Space();
+			}
 			WriteToken(DestructorDeclaration.TildeRole);
 			TypeDeclaration type = destructorDeclaration.Parent as TypeDeclaration;
 			if (type != null && type.Name != destructorDeclaration.Name)
